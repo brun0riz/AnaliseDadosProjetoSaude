@@ -90,23 +90,23 @@ def main():
             exibir_informcoes_exames(dado_exame, informacoes_exames)
         elif opcao == "2":
             resultados = buscar_exames_por_faixa(df, informacoes_exames, "acima")
-            print("Exames com valores acima da faixa normal:\n", resultados)
+            print("\nExames com valores acima da faixa normal:\n", resultados)
         elif opcao == "3":
             resultados = buscar_exames_por_faixa(df, informacoes_exames, "abaixo")
-            print("Exames com valores abaixo da faixa normal:\n", resultados)
+            print("\nExames com valores abaixo da faixa normal:\n", resultados)
         elif opcao == "4":
             resultados = buscar_exames_por_faixa(df, informacoes_exames, "nos conformes")
-            print("Exames dentro da faixa normal:\n", resultados)
+            print("\nExames dentro da faixa normal:\n", resultados)
         elif opcao == "5":
             listar_todos_exames(informacoes_exames)
         elif opcao == "6":
             quant_tabela = int(input("\nDigite a quantidade de linhas que deseja visualizar na tabela: "))
             listar_tabela(df, quant_tabela)
         elif opcao == "7":
-            print("Saindo do programa.")
+            print("\nEncerrando.")
             break
         else:
-            print("Opção inválida. Tente novamente.")
+            print("\nOpção inválida. Tente novamente.")
 
 if __name__ == '__main__':
     main()
