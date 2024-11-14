@@ -18,21 +18,43 @@ def exibir_informcoes_exames(dado, informacoes_exames):
 
 def buscar_exames_por_faixa(df, informacoes_exames, condicao):
 
-    resultados = []
-    for coluna in informacoes_exames:
-        if informacoes_exames[coluna]["faixa_normal"] is not None:
-            faixa = informacoes_exames[coluna]["faixa_normal"].split(" a ")
+    pd.set_option('display.max_rows', None)
+
+    resultados = {}
+    print("Deseja visualizar os resultados de todos os exames ou de um específico?")
+
+    opcao = input("Digite 'todos' ou o nome do exame específico: ")
+
+    if opcao == "todos":
+        for coluna in informacoes_exames:
+            if informacoes_exames[coluna]["faixa_normal"] is not None:
+                faixa = informacoes_exames[coluna]["faixa_normal"].split(" a ")
+                min_val = float(faixa[0])
+                max_val = float(faixa[1])
+                if condicao == "acima":
+                    resultados[coluna] = df[df[coluna] > max_val][[coluna]]
+                elif condicao == "abaixo":
+                    resultados[coluna] = df[df[coluna] < min_val][[coluna]]
+                elif condicao == "nos conformes":
+                    resultados[coluna] = df[(df[coluna] >= min_val) & (df[coluna] <= max_val)][[coluna]]
+        resultados_df = pd.concat(resultados, axis=1).fillna('--')
+        return resultados_df
+    else:
+        if opcao in informacoes_exames:
+            faixa = informacoes_exames[opcao]["faixa_normal"].split(" a ")
             min_val = float(faixa[0])
             max_val = float(faixa[1])
             if condicao == "acima":
-                resultados.append(df[df[coluna] > max_val][[coluna]])
+                resultado = df[df[opcao] > max_val][[opcao]]
             elif condicao == "abaixo":
-                resultados.append(df[df[coluna] < min_val][[coluna]])
+                resultado = df[df[opcao] < min_val][[opcao]]
             elif condicao == "nos conformes":
-                resultados.append(df[(df[coluna] >= min_val) & (df[coluna] <= max_val)][[coluna]])
+                resultado = df[(df[opcao] >= min_val) & (df[opcao] <= max_val)][[opcao]]
+            return resultado.fillna('--')
+        else:
+            print("Exame não encontrado")
 
-    resultados_df = pd.concat(resultados, axis=1).fillna('--')
-    return resultados_df
+
 
 def listar_todos_exames(informacoes_exames):
     print("\nListagem de todos os exames:\n")
